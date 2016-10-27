@@ -59,7 +59,6 @@ marking = json.decode(raw_marking)
 n = 0
 for _ in pairs(marking) do n = n + 1 end
 
-
 -- Import python libraries and set pairs
 py.exec([=[
 import numpy as np
@@ -110,7 +109,7 @@ image=cv2.imread(im_path)]=], {im_path=image_path})
       
       output = applyFn(function (x) return x:clone() end, output)
 
-      if opts.flip == 1 then
+      if opts.flip then
         local flippedOut = nil
         if opts.useGPU then
               flippedOut = model:forward(flip(input:view(1,3,opts.res,opts.res):cuda()))
