@@ -5,18 +5,22 @@ function C.parse(arg)
   cmd:text()
   cmd:text('Options:')
   cmd:option('-useGPU', 1, 'Run the test on a GPU (0 is false)')
-  cmd:option('-usecudnn', false, 'Enable cudnn')
-  cmd:option('-demo', true, 'Show the results from 10 random images on MPII validation')
-  cmd:option('-eval', false, 'Evaluate the model')
-  cmd:option('-dataset', 'mpii', 'Select the dataset to use: LSP/MPII')
+  cmd:option('-usecudnn', 1, 'Enable cudnn')
+  cmd:option('-model', 'mpii', 'Select the dataset to use: LSP/MPII')
   cmd:option('-res', 256, 'Input resolution')
+  cmd:option('-json', '', 'Path to json file with detections')
+  cmd:option('-imdir', '', 'Path to directory with images')
+  cmd:option('-flip', 1, 'Average prediction between original and flipped image')
+  cmd:option('-score_thresh', 0.9, 'Score threshold or filter detections')
+  cmd:option('-output', 'output', 'Path to output directory')
   cmd:text()
   
   local opt = cmd:parse(arg or {})
   
-  opt.dataset:lower()
+  opt.model:lower()
   
-  assert(opt.dataset=='lsp' or opt.dataset=='mpii',"Only mpii and lsp are valid options")
+  --assert(opt.model-='lsp' or opt.model=='mpii',"Only mpii and lsp are valid options")
+  assert(opt.imdir~='' and opt.json~='', "You should specify images dir and json with marking")
   
   if opt.useGPU<1 then
         opt.useGPU = false
